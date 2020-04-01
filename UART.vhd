@@ -4,12 +4,11 @@ use IEEE.std_logic_1164.all;
 entity UART is
 	port
 	(
-		ck, rst: in std_logic;
+		CK, CK2, rst, ack, CE, RW: in std_logic;
 		RX: in std_logic;
-		TX: out std_logic;
-		address: in std_logic_vector(3 downto 0);
-		data: inout std_logic_vector(7 downto 0);
-		...
+		TX, done: out std_logic;
+		ADD: in std_logic_vector(3 downto 0);
+		DATA: inout std_logic_vector(7 downto 0)
 	);
 end UART;
 

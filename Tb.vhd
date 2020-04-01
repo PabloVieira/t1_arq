@@ -6,7 +6,7 @@ entity Tb is
 end Tb;
 
 architecture Tb of Tb is
-	signal ck, rst: std_logic;
+	signal rx, tx, ck, ck2, rst: std_logic;
 begin
 	rst <= '1', '0' after 50 ns;
 	process
@@ -14,12 +14,18 @@ begin
 		ck <= '1', '0' after 5 ns;
 		wait for 10 ns;
 	end process;
+	
+	process
+	begin
+		ck2 <= '1', '0' after 5 ns;
+		wait for 10 ns;
+	end process;
 
 	SisA: Entity work.UART port map
-			(rst => rst, ck => ck, tx => TX, rx => RX, ...
+			(rst => rst,ck => ck, ck2 => ck2, tx => TX, rx => RX--, ...
 			);
 
 	SisB: Entity work.UART port map
-			(rst => rst, ck => ck, rx => TX, tx => RX, ...
+			(rst => rst, ck => ck, ck2 => ck2, rx => TX, tx => RX--, ...
 			);
 end Tb;
