@@ -31,10 +31,15 @@
   <transforms xmlns="http://www.xilinx.com/XMLSchema">
     <transform xil_pn:end_ts="1584287929" xil_pn:name="TRAN_copyInitialToAbstractSimulation" xil_pn:start_ts="1584287928">
       <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1584288444" xil_pn:in_ck="-6799916884460740558" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1584288444">
+    <transform xil_pn:end_ts="1586214031" xil_pn:in_ck="-6799916884460740558" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1586214031">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="Tb.vhd"/>
       <outfile xil_pn:name="UART.vhd"/>
     </transform>
