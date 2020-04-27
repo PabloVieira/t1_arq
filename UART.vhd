@@ -12,7 +12,7 @@ entity RW is
 			data_in         :   in std_logic_vector(7 downto 0);
 			data_out        :   out std_logic_vector(7 downto 0)
 		);
-end RW;
+end RW;--
 architecture main of RW is
 	signal data: std_logic_vector(7 downto 0) := X"00" ;
 	signal busy: std_logic := '0';
