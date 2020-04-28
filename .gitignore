@@ -2,6 +2,26 @@
 # Created by https://www.gitignore.io/api/modelsim,xilinxise
 # Edit at https://www.gitignore.io/?templates=modelsim,xilinxise
 
+######### Quartus II source files
+
+/*
+!/*.gitignore
+##
+!*.qpf
+!*.qsf
+!*.qws
+!*.bdf
+!*.vhd
+!*.v
+!*.ptf
+!*.bsf
+!**/class.ptf
+!*.tbd
+!*.sof
+## tbd
+
+!*.tcl
+
 ### ModelSim ###
 # ignore ModelSim generated files and directories (temp files and so on)
 [_@]*
