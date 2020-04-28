@@ -6,8 +6,10 @@ entity Tb is
 end Tb;
 
 architecture Tb of Tb is
-	signal rx, tx, ack, ce, rw, ckA, ckB, rst: std_logic;
-	signal add: std_logic_vector (3 downto 0);
+	signal A2B, B2A, ackA, ackB, ceA, ceB, rwA, rwB , ckA, ckB, rstA, rstB: std_logic;
+	signal addA, addB: std_logic_vector (3 downto 0);
+	signal dataA,dataB: std_logic_vector( 7 downto 0);
+	signal doneA,doneB: std_logic;
 begin
 	rst <= '1', '0' after 50 ns;
 	process
@@ -23,8 +25,24 @@ begin
 	end process;
 
 	SisA: Entity work.UART port map
-			(rst => rst, CK => ckA, ACK => ack, CE => ce, RW => rw, TX =>tx , rx => RX, add => ADD);
+			(rst => rst, ClK => ckA, ACK => ackA, CE => ceA, RW => rwA, TX =>A2B , rx => B2A, addA => ADD, data =>dataA );
 
 	SisB: Entity work.UART port map
-			(rst => rst, CK => ckB, ACK => ack, CE => ce, RW => rw, TX =>tx , rx => RX, add => ADD);
+			(rst => rst, ClK => ckB, ACK => ackB, CE => ceB, RW => rwB, TX =>B2A , rx => A2B, addB => ADD, data=>dataB);
+	
+
+	process
+	begin
+		dataA <= X"41" after 5 ns, X'00' after 100 ns, ;
+		ce<='1' after 5 ns, '0' after 20 ns;
+		rw<='1' after 5 ns, '0' after 20 ns;
+		addA <= "0100" after 5 ns,'0' after 20 ns;
+
+		wait for 100 ns;
+
+
+		
+
+	end process;
+
 end Tb;
