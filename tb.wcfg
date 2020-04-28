@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/vieira/Documents/t1_arq/Tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="19" />
+   <wvobject fp_name="/tb/cka" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">cka</obj_property>
+      <obj_property name="ObjectShortName">cka</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/ckb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ckb</obj_property>
+      <obj_property name="ObjectShortName">ckb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/rsta" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rsta</obj_property>
+      <obj_property name="ObjectShortName">rsta</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/rstb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rstb</obj_property>
+      <obj_property name="ObjectShortName">rstb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/a2b" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">a2b</obj_property>
+      <obj_property name="ObjectShortName">a2b</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/b2a" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">b2a</obj_property>
+      <obj_property name="ObjectShortName">b2a</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/acka" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">acka</obj_property>
+      <obj_property name="ObjectShortName">acka</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/ackb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ackb</obj_property>
+      <obj_property name="ObjectShortName">ackb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/cea" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">cea</obj_property>
+      <obj_property name="ObjectShortName">cea</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/ceb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ceb</obj_property>
+      <obj_property name="ObjectShortName">ceb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/rwa" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rwa</obj_property>
+      <obj_property name="ObjectShortName">rwa</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/rwb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rwb</obj_property>
+      <obj_property name="ObjectShortName">rwb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/adda" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">adda[3:0]</obj_property>
+      <obj_property name="ObjectShortName">adda[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/addb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">addb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">addb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/dataa" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dataa[7:0]</obj_property>
+      <obj_property name="ObjectShortName">dataa[7:0]</obj_property>
+      <obj_property name="Radix">ASCIIRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/datab" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">datab[7:0]</obj_property>
+      <obj_property name="ObjectShortName">datab[7:0]</obj_property>
+      <obj_property name="Radix">ASCIIRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/donea" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">donea</obj_property>
+      <obj_property name="ObjectShortName">donea</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/doneb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">doneb</obj_property>
+      <obj_property name="ObjectShortName">doneb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+</wave_config>
