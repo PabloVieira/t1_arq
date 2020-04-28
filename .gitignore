@@ -129,3 +129,9 @@ xilinxsim.ini
 _xmsgs/pn_parser.xmsgs
 isim/temp/tb.vdb
 isim/temp/uart.vdb
+t1_arq.gise
+t1_arq.xise
+xilinxsim.ini
+_xmsgs/pn_parser.xmsgs
+isim/temp/tb.vdb
+isim/temp/uart.vdb
