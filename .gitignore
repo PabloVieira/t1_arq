@@ -117,21 +117,7 @@ _ngo/
 _xmsgs/
 
 # End of https://www.gitignore.io/api/modelsim,xilinxise
-isim/temp/uart.vdb
-isim/temp/tb.vdb
-_xmsgs/pn_parser.xmsgs
-xilinxsim.ini
-t1_arq.xise
-t1_arq.gise
-t1_arq.gise
-t1_arq.xise
-xilinxsim.ini
-_xmsgs/pn_parser.xmsgs
-isim/temp/tb.vdb
-isim/temp/uart.vdb
-t1_arq.gise
-t1_arq.xise
-xilinxsim.ini
-_xmsgs/pn_parser.xmsgs
-isim/temp/tb.vdb
-isim/temp/uart.vdb
+*.vdb
+*.xmsgs
+*.ini
+*.xise
