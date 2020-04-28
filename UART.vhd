@@ -279,17 +279,17 @@ entity uart is
 		-----------------------------Clock e Reset
 		clk, rst: in std_logic;
 
-		------------------------------Confirmação[Sys->UART], Escrita/Leitura, Chip Enable 
+		------------------------------Confirmao[Sys->UART], Escrita/Leitura, Chip Enable 
 		ack, rw, ce: in std_logic; 
 
-		-----------------------------Confirmação[UART->Sys]
+		-----------------------------Confirmao[UART->Sys]
 		done: out std_logic;
 
-		-----------------------------Bits de transferência serial
+		-----------------------------Bits de transferncia serial
 		RX: in std_logic;
 		TX: out std_logic;
 
-		-----------------------------Endereço de acesso
+		-----------------------------Endereo de acesso
 		add: in std_logic_vector(3 downto 0);
 
 		-----------------------------Dados
@@ -360,8 +360,8 @@ begin
 
 	
 	data <= data_outRR when ce_rr ='1' else reg_base when ce_base='1' else "ZZZZZZZZ";
-	ce_rw <= '1' when ((add="0100") and (rw ='1') and (ce='1')) else '0';
-	ce_rr <= '1' when (add="1000") and (rw ='0') and (ce='1') else '0';
+	ce_rw <= '1' when (add="0100") and (rw ='0') and (ce='1') else '0';
+	ce_rr <= '1' when (add="1000") and (rw ='1') and (ce='1') else '0';
 	ce_base <= '1' when (add="0000") and (ce='1') else '0';
 
 end architecture main;
