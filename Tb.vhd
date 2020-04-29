@@ -55,29 +55,30 @@ begin
 --		addA <= "1000";
 	end process;
 	
+	
 	process(ckA, ckB)
 	begin
-		if dataA = x"00" and doneA = '1'then
+		if addA = "0000" and dataA = x"00" and doneA = '1' then
 			baseRW <= '0';
 			ackA <= '1';
 		end if;
-		if dataA = x"01" and doneA = '1'then
+		if addA = "0000" and dataA = x"01" and doneA = '1' then
 			baseRW <= '1';
 			ackA <= '1';
 		end if;
-		if doneA = '0'then
+		if doneA = '0' then
 			ackA <= '0';
 		end if;
 		
-		if dataB = x"00" and doneB = '1'then
+		if addB = "0000" and dataB = x"00" and doneB = '1' then
 			baseRW <= '0';
 			ackB <= '1';
 		end if;
-		if dataB = x"01" and doneB = '1'then
+		if addB = "0000" and dataB = x"01" and doneB = '1' then
 			baseRW <= '1';
 			ackB <= '1';
 		end if;
-		if doneB = '0'then
+		if doneB = '0' then
 			ackB <= '0';
 		end if;
 
