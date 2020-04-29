@@ -7,7 +7,7 @@ end Tb;
 
 architecture Tb of Tb is	
 	signal ceA, ceB,rst, ckA, ckB, A2B, B2A: std_logic;
-	signal rwA, rwB, doneA, doneB, baseRW, ackA, ackB: std_logic;
+	signal rwA, rwB, doneA, doneB, ackA, ackB: std_logic;
 	signal addA, addB: std_logic_vector (3 downto 0);
 	signal dataA, dataB: std_logic_vector( 7 downto 0);
 begin
@@ -36,51 +36,32 @@ begin
 				TX =>B2A , rx => A2B, add => addB, data=>dataB, done => doneB
 			);
 	
-	process
+	process(ckA)
 	begin
-		wait until rst'event and rst = '0';
-		ceA <= '1';
-		rwA <= '0';
-		addA <= "0100";
-		dataA <= x"41";
-		ceB <= '1';
-		rwB <= '1';
-		addB <= "0000";
-		wait until baseRW = '1' and doneB = '1';
-		addB <= "1000";
---		rwB <= '0';
---		addB <= "0100";
---		dataB <= x"42";
---		rwA <= '1';
---		addA <= "1000";
+		if rst = '1' then
+			ceA <= '1';
+			rwA <= '0';
+			addA <= "0100";
+			dataA <= x"41";
+			
+			ceB <= '1';
+			rwB <= '1';
+			addB <= "1000";
+		end if;
 	end process;
 	
-	
-	process(ckA, ckB)
-	begin
-		if addA = "0000" and dataA = x"00" and doneA = '1' then
-			baseRW <= '0';
-			ackA <= '1';
-		end if;
-		if addA = "0000" and dataA = x"01" and doneA = '1' then
-			baseRW <= '1';
-			ackA <= '1';
-		end if;
+	process(doneA, doneB)
+	begin		
 		if doneA = '0' then
 			ackA <= '0';
+		else
+			ackA <= '1';
 		end if;
 		
-		if addB = "0000" and dataB = x"00" and doneB = '1' then
-			baseRW <= '0';
-			ackB <= '1';
-		end if;
-		if addB = "0000" and dataB = x"01" and doneB = '1' then
-			baseRW <= '1';
-			ackB <= '1';
-		end if;
 		if doneB = '0' then
 			ackB <= '0';
+		else
+			ackB <= '1';
 		end if;
-
-	end process;
+	end process;	
 end Tb;

@@ -219,8 +219,8 @@ begin
 		elsif (rising_edge(clk)) then
 			case state is
 				when idle=>
-                    if data_in = '1' then
-                        done2RR <= '0';
+				  if data_in = '1' then
+						done2RR <= '0';
 						state <= d0;
 					else
 						state <= idle;
