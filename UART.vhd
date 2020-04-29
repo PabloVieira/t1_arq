@@ -172,7 +172,7 @@ begin
         if ack ='1' then
             done <='0';
             busy <='0';
-            data_out <= X"00";
+            data_out <= data;--X"00";
         end if ;
     end process;
 end architecture main;

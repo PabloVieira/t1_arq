@@ -6,8 +6,8 @@ entity Tb is
 end Tb;
 
 architecture Tb of Tb is	
-	signal rst, ckA, ckB, A2B, B2A: std_logic;
-	signal ceA, ceB, rwA, rwB, doneA, doneB, ackA, ackB: std_logic;
+	signal ceA, ceB,rst, ckA, ckB, A2B, B2A: std_logic;
+	signal rwA, rwB, doneA, doneB, baseRW, ackA, ackB: std_logic;
 	signal addA, addB: std_logic_vector (3 downto 0);
 	signal dataA, dataB: std_logic_vector( 7 downto 0);
 begin
@@ -45,23 +45,41 @@ begin
 		dataA <= x"41";
 		ceB <= '1';
 		rwB <= '1';
+		addB <= "0000";
+		wait until baseRW = '1' and doneB = '1';
 		addB <= "1000";
---		if (doneB = '1') then
---			ackB <= '1';
---			addB <= "1000";
---		end if;
+--		rwB <= '0';
+--		addB <= "0100";
+--		dataB <= x"42";
+--		rwA <= '1';
+--		addA <= "1000";
 	end process;
 	
-	process
+	process(ckA, ckB)
 	begin
-		wait until doneA = '1';
-		ackA <= '1';		
-	end process;	
-	
-		process
-	begin
-		wait until doneB = '1';
-		ackB <= '1';		
-	end process;
+		if dataA = x"00" and doneA = '1'then
+			baseRW <= '0';
+			ackA <= '1';
+		end if;
+		if dataA = x"01" and doneA = '1'then
+			baseRW <= '1';
+			ackA <= '1';
+		end if;
+		if doneA = '0'then
+			ackA <= '0';
+		end if;
+		
+		if dataB = x"00" and doneB = '1'then
+			baseRW <= '0';
+			ackB <= '1';
+		end if;
+		if dataB = x"01" and doneB = '1'then
+			baseRW <= '1';
+			ackB <= '1';
+		end if;
+		if doneB = '0'then
+			ackB <= '0';
+		end if;
 
+	end process;
 end Tb;
