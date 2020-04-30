@@ -1,4 +1,5 @@
 
+--=======================================		Register Write		(RW)
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 
@@ -12,7 +13,7 @@ entity RW is
 			data_in         :   in std_logic_vector(7 downto 0);
 			data_out        :   out std_logic_vector(7 downto 0)
 		);
-end RW;--
+end RW;
 architecture main of RW is
 	signal data: std_logic_vector(7 downto 0) := X"00" ;
 	signal busy: std_logic := '0';
@@ -41,7 +42,8 @@ begin
 end architecture main;
 
 
---=======================================		Register Write Output
+
+--=======================================		Register Write Output	(RWO)
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 
@@ -135,7 +137,8 @@ end architecture main ;
 
 
 
---=======================================		Register Read
+
+--=======================================		Register Read 	(RR)
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 
@@ -180,7 +183,8 @@ end architecture main;
 
 
 
---=======================================		Register Read Input
+
+--=======================================		Register Read Input	(RRI)
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 
@@ -188,6 +192,8 @@ entity rri is
     port(
         clk, rst: in std_logic;
         done2RR: out std_logic;
+		  ackFromSys: in std_logic;
+		  
 
         data_in: in std_logic;
         data_out: out std_logic_vector(7 downto 0)
@@ -219,8 +225,11 @@ begin
 		elsif (rising_edge(clk)) then
 			case state is
 				when idle=>
-				  if data_in = '1' then
-						done2RR <= '0';
+					if ackFromSys ='1' then 
+						done2RR <='0';
+					end if;
+                    if data_in = '1' then
+                        done2RR <= '0';
 						state <= d0;
 					else
 						state <= idle;
@@ -270,6 +279,7 @@ begin
 end main;
 
 
+
 --=======================================		UART
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
@@ -279,17 +289,17 @@ entity uart is
 		-----------------------------Clock e Reset
 		clk, rst: in std_logic;
 
-		------------------------------Confirmao[Sys->UART], Escrita/Leitura, Chip Enable 
+		------------------------------Confirmação[Sys->UART], Escrita/Leitura, Chip Enable 
 		ack, rw, ce: in std_logic; 
 
-		-----------------------------Confirmao[UART->Sys]
+		-----------------------------Confirmação[UART->Sys]
 		done: out std_logic;
 
-		-----------------------------Bits de transferncia serial
+		-----------------------------Bits de transferência serial
 		RX: in std_logic;
 		TX: out std_logic;
 
-		-----------------------------Endereo de acesso
+		-----------------------------Endereço de acesso
 		add: in std_logic_vector(3 downto 0);
 
 		-----------------------------Dados
@@ -309,15 +319,20 @@ architecture main of uart is
 	signal rwo_busy: std_logic;
 	signal data_outRR: std_logic_vector(7 downto 0);
 	signal requestToRWO: std_logic;
+	signal ackSys2RR, ackSys2RW: std_logic;
 	
 begin
 	
 	reg_base <= X"00" when RW_done='1' else
-				X"01" when RR_done='1' else
-				X"FF";
+				X"01" when RR_done='1';
 
 	ce_base_setup <= '1' when RW_done='1' OR RR_done='1' else '0';
 	done <= ce_base_setup;
+	
+	acksys2RW <='1' when ack ='1' and reg_base =X"00" else '0';
+	acksys2RR <='1' when ack ='1' and reg_base =X"01" else '0';
+	
+	
 
 	RW_UART:    entity work.RW port map(
 							clk=> clk,
@@ -328,7 +343,7 @@ begin
                             request =>requestToRWO, 
                             ok2send=> rwo_busy,
 							done2Sys => RW_done,
-							acksys =>ack 
+							acksys =>ackSys2RW 
                             );
 
     RWO_UART:   entity work.RWO port map(
@@ -345,7 +360,7 @@ begin
 							rst=> rst,
 							data_incoming=> done2RR_signal, 
 							done=>RR_done,
-							ack=>ack,
+							ack=>ackSys2RR,
                             data_in=> data2RR, 
                             data_out => data_outRR 
                             );
@@ -354,18 +369,18 @@ begin
 							clk=> clk,
 							rst=> rst,
 							done2RR=> done2RR_signal,
+							ackFromSys => acksys2RR,
                             data_in=> RX, 
                             data_out=> data2RR
                             );
 
 	
 	data <= data_outRR when ce_rr ='1' else reg_base when ce_base='1' else "ZZZZZZZZ";
-	ce_rw <= '1' when (add="0100") and (rw ='0') and (ce='1') else '0';
-	ce_rr <= '1' when (add="1000") and (rw ='1') and (ce='1') else '0';
+	ce_rw <= '1' when ((add="0100") and (rw ='1') and (ce='1')) else '0';
+	ce_rr <= '1' when (add="1000") and (rw ='0') and (ce='1') else '0';
 	ce_base <= '1' when (add="0000") and (ce='1') else '0';
 
 end architecture main;
 
 
 
---=======================================		Register Write
