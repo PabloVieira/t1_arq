@@ -53,6 +53,8 @@ entity RWO is
         data_incoming       : in std_logic;
 		  data_in             : in std_logic_vector(7 downto 0);
         data_out            : out std_logic;
+        ackFromOtherSys        : in std_logic;
+        auth2OtherSys        : out std_logic;
         busy                : out std_logic
     );
 end RWO;
@@ -79,11 +81,13 @@ begin
 	begin
 		if rst = '1' then
 			state <= idle;
-			busy <= '0';
+            busy <= '0';
+            auth2Othersys <= '0';
 		elsif (rising_edge(clk)) then
 			case state is
 				when idle =>
                     if data_incoming = '1'  then
+                        auth2Othersys <='1';
                         data_out <='0';
                         state <= startbit;
                         busy <='1';
@@ -92,44 +96,81 @@ begin
 								state <= idle;
 						  end if;
 				when startbit=>
-                    if data_incoming = '0' then
+                    if data_incoming = '0' and ackFromOtherSys = '1' then
                         data<=data_in;
+                        auth2Othersys <='0';
                         busy<='0';
                         data_out<='1';
 								state <= d0;
 						  else
 								state <= startbit;
 						  end if;
-				when d0 =>
-                    data_out <= data(0);
-                    state <= d1;
-				when d1 =>
-                    data_out <= data(1);
-                    state <= d2;
-            when d2=>
-                    data_out <= data(2);
-                    state <= d3;
-            when d3=>
-                    data_out <= data(3);
-                    state <= d4;
-            when d4=>
-                    data_out <= data(4);
-                    state <= d5;
-            when d5=>
-                    data_out <= data(5);
-                    state <= d6;
-            when d6=>
-                    data_out <= data(6);
-                    state <= d7;
-            when d7=>
-                    data_out <= data(7);
-                    state <= endbit0;
-            when endbit0 =>
-                    data_out<= '1';
-                    state <= endbit1;
-            when endbit1 =>
-                    data_out<='1';
-                    state <= idle;
+                when d0 =>
+                    if ackFromOtherSys = '0' then
+                            auth2Othersys <='1';
+                            data_out <= data(0);
+                            state <= d1;
+                    end if;
+                when d1 =>
+                    if ackFromOtherSys = '1' then
+                        auth2Othersys <='0';
+                        data_out <= data(1);
+                        state <= d2;
+                    end if;
+                when d2=>
+                    if ackFromOtherSys = '0' then
+                        auth2Othersys <='1';
+                        data_out <= data(2);
+                        state <= d3;
+                    end if;
+                    when d3=>
+                    if ackFromOtherSys = '1' then
+                        auth2Othersys <='0';
+                        data_out <= data(3);
+                        state <= d4;
+                    end if;
+                when d4=>
+                    if ackFromOtherSys = '0' then
+                        auth2Othersys <='1';
+                        data_out <= data(4);
+                        state <= d5;
+                    end if;
+                when d5=>
+                    if ackFromOtherSys = '1' then
+                        auth2Othersys <='0';
+                        data_out <= data(5);
+                        state <= d6;
+                    end if;
+                when d6=>
+                    if ackFromOtherSys = '0' then
+                        auth2Othersys <='1';
+                        data_out <= data(6);
+                        state <= d7;
+                    end if;
+                when d7=>
+                    if ackFromOtherSys = '1' then
+                        auth2Othersys <='0';
+                        data_out <= data(7);
+                        state <= endbit0;
+                    end if;
+                when endbit0=>
+                    if ackFromOtherSys ='0' then
+                        auth2Othersys <='1';
+                        state <= endbit1;
+                        data_out<='1';
+                    else
+                        state <= endbit0; --aqui poderia ter um erro
+                    end if;
+                when endbit1 =>
+                    if ackFromOtherSys ='1' then
+                        auth2OtherSys <='0';
+                        state <= idle;
+                        data_out<='1';
+                    else
+                        state <= endbit1;
+                    end if;
+                
+                
             end case;
 		end if;
 	end process;
@@ -192,7 +233,9 @@ entity rri is
     port(
         clk, rst: in std_logic;
         done2RR: out std_logic;
-		  ackFromSys: in std_logic;
+        ackFromSys: in std_logic;
+        ackFromOtherSys: in std_logic;
+        auth2OtherSys   : out std_logic;
 		  
 
         data_in: in std_logic;
@@ -228,51 +271,84 @@ begin
 					if ackFromSys ='1' then 
 						done2RR <='0';
 					end if;
-                    if data_in = '1' then
+                    if data_in = '1' and ack and ackFromOtherSys ='1' then
+                        auth2OtherSys <='1';
                         done2RR <= '0';
 						state <= d0;
 					else
 						state <= idle;
                     end if;                    
                 when d0=>
-                    data(0)<= data_in;
-                    state <= d1;
-                   
+                    if ackFromOtherSys = '0' then
+                        auth2OtherSys<='0';
+                        data(0)<= data_in;
+                        state <= d1;
+                    end if;
                 when d1=>
+                if ackFromOtherSys = '1' then
+                    auth2OtherSys<='1';
                     data(1)<= data_in;
                     state <= d2;
+                end if;
+                    
                 when d2=>
+                if ackFromOtherSys = '0' then
+                    auth2OtherSys<='0';
                     data(2)<= data_in;
-                    state <= d3;    
+                    state <= d3;
+                end if;
+                   
                 when d3=>
+                if ackFromOtherSys = '1' then
+                    auth2OtherSys<='1';
                     data(3)<= data_in;
                     state <= d4;    
+                end if;
+                    
                 when d4=>
+                if ackFromOtherSys = '0' then
+                    auth2OtherSys<='0';
                     data(4)<= data_in;
                     state <= d5;    
+                end if;
+                        
                 when d5=>
+                if ackFromOtherSys = '1' then
+                    auth2OtherSys<='1';
                     data(5)<= data_in;
                     state <= d6;    
+                end if;
+                       
                 when d6=>
+                if ackFromOtherSys = '0' then
+                    auth2OtherSys<='0';
                     data(6)<= data_in;
                     state <= d7;    
+                end if;
+                       
                 when d7=>
+                if ackFromOtherSys = '1' then
+                    auth2OtherSys<='1';
                     data(7)<= data_in;
-                    state <= endbit0;        
+                    state <= endbit0;    
+                end if;
+                          
 				when endbit0=>
-					if data_in = '1' then
+                    if data_in = '1' and ackFromOtherSys ='0' then
+                        auth2Othersys <='0';
                         state <= endbit1;
                         data_out <= data;
                         done2RR <= '1';
-					else
-						state <= endbit0; --aqui poderia ter um erro
+                    else
+                        state <= endbit0; --aqui poderia ter um erro
                     end if;
-				when endbit1 =>
-					if data_in = '1' then
-						state <= idle;
-					else
-						state <= endbit1;
-					end if;
+                when endbit1 =>
+                    if data_in = '1' and ackFromOtherSys ='1' then
+                        auth2OtherSys <='1';
+                        state <= idle;
+                    else
+                        state <= endbit1;
+                    end if;
 			end case;
 		end if;
 	end process;
@@ -293,7 +369,15 @@ entity uart is
 		ack, rw, ce: in std_logic; 
 
 		-----------------------------Confirmação[UART->Sys]
-		done: out std_logic;
+        done: out std_logic;
+        
+
+        -------- Mais quatro fios para controle dos diferentes clocks
+        RWO_A2B_AUTH: out std_logic;
+        RRI_B2A_ACK: in std_logic;
+
+        RRI_A2B_AUTH out std_logic;
+        RWO_B2A_ACK in std_logic;
 
 		-----------------------------Bits de transferência serial
 		RX: in std_logic;
@@ -350,6 +434,8 @@ begin
 							clk=> clk,
 							rst=> rst,
                             data_in=> dataToRWO, 
+                            ackFromOtherSys=>RRI_B2A_ACK,
+                            auth2OtherSys=> RWO_A2B_AUTH,
                             data_out=> TX, 
                             data_incoming=> requestToRWO, 
                             busy=> rwo_busy
@@ -368,7 +454,9 @@ begin
     RRI_UART:   entity work.RRI port map(
 							clk=> clk,
 							rst=> rst,
-							done2RR=> done2RR_signal,
+                            done2RR=> done2RR_signal,
+                            ackFromOtherSys => RWO_B2A_ACK ,
+                            auth2OtherSys => RRI_A2B_AUTH,
 							ackFromSys => acksys2RR,
                             data_in=> RX, 
                             data_out=> data2RR
@@ -381,6 +469,3 @@ begin
 	ce_base <= '1' when (add="0000") and (ce='1') else '0';
 
 end architecture main;
-
-
-
